@@ -6,7 +6,8 @@
     <Description>Provides a Roslyn-based code editor using AvaloniaEdit (Avalonia platform) with completion, diagnostics, and quick actions</Description>
     <NoWarn>NU5104</NoWarn>
     <IsPackable>true</IsPackable>
-    <PackageProjectUrl>https://github.com/Darp-IT/Darp.Utils</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Darp-IT/roslynpad</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Darp-IT/roslynpad</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" NoWarn="NU5104" />

@@ -4,7 +4,8 @@
     <RootNamespace>RoslynPad.Roslyn</RootNamespace>
     <Description>Provides platform-specific (Avalonia) implementations for UI elements required by the RoslynPad.Roslyn package.</Description>
     <IsPackable>true</IsPackable>
-    <PackageProjectUrl>https://github.com/Darp-IT/Darp.Utils</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Darp-IT/roslynpad</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Darp-IT/roslynpad</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
     <AvaloniaResource Include="**\*.png" Exclude="obj\**" />
