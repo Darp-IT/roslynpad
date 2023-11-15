@@ -21,6 +21,13 @@ jobs:
         dotnet pack src/RoslynPad.Roslyn --configuration Release -bl  -m:1
     - name: Set up nuget
       run: dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Darp-IT/index.json"
+    - run: |
+        ls -l
+        ls -l roslynpad
+    - run: |
+        ls -l src
+        ls -l src/RoslynPad.Editor.Avalonia
+        ls -l src/RoslynPad.Editor.Avalonia/bin/Release
     - name: Push
       run: |
         dotnet nuget push "src/RoslynPad.Editor.Avalonia/bin/Release/*.nupkg" --skip-duplicate --api-key ${{ github.token }} --source "github"
