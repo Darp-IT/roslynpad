@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         x:Class="RoslynPadReplSample.MainWindow"
         xmlns:editor1="clr-namespace:RoslynPad.Editor;assembly=RoslynPad.Editor.Avalonia"
+        xmlns:roslynPadReplSample="clr-namespace:RoslynPadReplSample"
         mc:Ignorable="d"
         Title="RoslynPad REPL Sample"
         Height="350"
@@ -11,12 +12,15 @@
     <ScrollViewer Background="#eee">
         <ItemsControl Name="Items">
             <ItemsControl.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate DataType="roslynPadReplSample:DocumentViewModel">
                     <StackPanel>
-                        <editor1:RoslynCodeEditor FontFamily="Consolas"
+                        <editor1:RoslynCodeEditor Loaded="OnItemLoaded"
+                                                  FontFamily="Consolas"
                                                   Margin="5"
-                                                  ShowLineNumbers="False" />
-                        <TextBlock Text="Hallo" TextWrapping="Wrap" />
+                                                  ShowLineNumbers="True"
+                                                  IsReadOnly="{CompiledBinding IsReadOnly}"
+                                                  Height="100"/>
+                        <TextBlock Text="{CompiledBinding Result}" TextWrapping="Wrap" />
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

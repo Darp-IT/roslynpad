@@ -5,8 +5,10 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -26,13 +28,24 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         AvaloniaXamlLoader.Load(this);
+        this.AttachDevTools();
         // InitializeComponent();
 
         _documents = new ObservableCollection<DocumentViewModel>();
-        var Items = this.Get<ItemsControl>("Items");
-        Items.ItemsSource = _documents;
+        var items = this.Get<ItemsControl>("Items");
+        items.ItemsSource = _documents;
 
-        _host = new CustomRoslynHost(additionalAssemblies: new Assembly[] {}, RoslynHostReferences.NamespaceDefault);
+        _host = new CustomRoslynHost(additionalAssemblies: new[]
+        {
+            // Necessary for internal composition model!
+            Assembly.Load("RoslynPad.Roslyn.Avalonia"),
+            Assembly.Load("RoslynPad.Editor.Avalonia")
+        }, RoslynHostReferences.NamespaceDefault.With(assemblyReferences: new[]
+        {
+            typeof(object).Assembly,
+            typeof(System.Text.RegularExpressions.Regex).Assembly,
+            typeof(Enumerable).Assembly,
+        }));
 
         AddNewDocument();
     }
@@ -42,7 +55,7 @@ public partial class MainWindow : Window
         _documents.Add(new DocumentViewModel(_host, previous));
     }
 
-    private async void OnItemLoaded(object sender, EventArgs e)
+    private async void OnItemLoaded(object sender, RoutedEventArgs e)
     {
         var editor = (RoslynCodeEditor)sender;
         editor.Loaded -= OnItemLoaded;
@@ -61,7 +74,6 @@ public partial class MainWindow : Window
                     args.TextContainer.UpdateText));
             };
         }
-
         var documentId = await editor.InitializeAsync(_host, new ClassificationHighlightColors(),
             workingDirectory, string.Empty, SourceCodeKind.Script).ConfigureAwait(true);
 
